@@ -3,7 +3,7 @@ package com.kiprisAPI.controller;
 import com.kiprisAPI.service.KiprisService;
 import com.kiprisAPI.service.MakeKipris;
 import com.kiprisAPI.service.NaverService;
-import com.kiprisAPI.service.TodayKipris;
+import com.kiprisAPI.service.TodayKiprisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,11 +16,11 @@ import java.util.Map;
 public class KiprisController {
 
     private KiprisService kiprisService;
-    private TodayKipris todayKipris;
+    private TodayKiprisService todayKipris;
     private NaverService naverService;
 
     @Autowired
-    public KiprisController(KiprisService kiprisService, TodayKipris todayKipris, NaverService naverService) {
+    public KiprisController(KiprisService kiprisService, TodayKiprisService todayKipris, NaverService naverService) {
         this.kiprisService = kiprisService;
         this.todayKipris = todayKipris;
         this.naverService = naverService;
@@ -70,5 +70,6 @@ public class KiprisController {
         naverService.setSearchWord(searchWord);
         return naverService.getRelationWord();
     }
+
 
 }

@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class TodayKipris {
+public class TodayKiprisService {
 
     public static final String WORD_URL = "http://www.kipris.or.kr/khome/remocon/viewStat/favorSearchWord.jsp";
     public static final String PATENT_URL = "http://www.kipris.or.kr/khome/today/today.jsp";
