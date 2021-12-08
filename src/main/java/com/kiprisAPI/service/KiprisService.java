@@ -107,6 +107,18 @@ public class KiprisService {
         }
     }
 
+    public List<MakeKipris> makeAuthorityDocuments(String authName){
+        List<MakeKipris> threadList = new ArrayList<>();
+
+        for(int j=0; j<admin_name.length; j++){
+            setStateName(authName, admin_name[j]);
+            setDbJoin(stateName);
+            threadList.add(new MakeKipris(this.searchWord, getStateName(), getDbJoin()));
+        }
+
+        return threadList;
+    }
+
     public List<MakeKipris> makeAllDocuments(){
         List<MakeKipris> threadList = new ArrayList<>();
 
@@ -158,13 +170,18 @@ public class KiprisService {
 
     }
 
-    public String findTotal(String stateName){
 
-        String total = documents.get(stateName).select("form[name=listForm] p.articles > span.total").text();
+    public String delComma(String strNum){
+        return strNum.replaceAll("\\,","");
+    }
+
+    public int findTotal(String stateName){
+
+        String total = delComma(documents.get(stateName).select("form[name=listForm] p.articles > span.total").text());
         if(total.equals("")){
             total = "0";
         }
-        return total;
+        return Integer.parseInt(total);
     }
 
 }

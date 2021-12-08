@@ -13,26 +13,40 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api")
-public class KiprisController {
+public class TrensisController {
 
     private KiprisService kiprisService;
-    private TodayKiprisService todayKipris;
+    private TodayKiprisService todayKiprisService;
     private NaverService naverService;
 
     @Autowired
-    public KiprisController(KiprisService kiprisService, TodayKiprisService todayKipris, NaverService naverService) {
+    public TrensisController(KiprisService kiprisService, TodayKiprisService todayKipris, NaverService naverService) {
         this.kiprisService = kiprisService;
-        this.todayKipris = todayKipris;
+        this.todayKiprisService = todayKipris;
         this.naverService = naverService;
     }
 
+    @GetMapping(value = "/getAuthorityTotal")
+    public Map<String, Integer> getAuthorityTotal(@RequestParam String searchWord, @RequestParam String authority){
+        kiprisService.setSearchWord(searchWord);
+        List<MakeKipris> authDocuments = kiprisService.makeAuthorityDocuments(authority);
+        kiprisService.documentThreadRun(authDocuments);
+
+        Map<String, Integer> authTotal = new HashMap<>();
+        for(int i=0; i<authDocuments.size(); i++){
+            authTotal.put(authDocuments.get(i).getStateName(), kiprisService.findTotal(authDocuments.get(i).getStateName()));
+        }
+
+        return authTotal;
+    }
+
     @GetMapping(value = "/getDocumentsTotal")
-    public Map<String, String> getDocumentsTotal(@RequestParam String searchWord){
+    public Map<String, Integer> getDocumentsTotal(@RequestParam String searchWord){
         kiprisService.setSearchWord(searchWord);
         List<MakeKipris> allDocuments = kiprisService.makeAllDocuments();
         kiprisService.documentThreadRun(allDocuments);
 
-        Map<String, String> documentsTotal = new HashMap<>();
+        Map<String, Integer> documentsTotal = new HashMap<>();
         for(int i=0; i<allDocuments.size(); i++){
             documentsTotal.put(allDocuments.get(i).getStateName(), kiprisService.findTotal(allDocuments.get(i).getStateName()));
         }
@@ -41,13 +55,13 @@ public class KiprisController {
     }
 
     @GetMapping(value = "/getDocumentsYearTotal")
-    public Map<String, String> getDocumentsYearTotal(@RequestParam String searchWord, @RequestParam String authority,
-                                                     @RequestParam String administration, @RequestParam String classify) {
+    public Map<String, Integer> getDocumentsYearTotal(@RequestParam String searchWord, @RequestParam String authority,
+                                                      @RequestParam String administration, @RequestParam String classify) {
         kiprisService.setSearchWord(searchWord);
         List<MakeKipris> yearDocuments = kiprisService.makeClassifyYearDocuments(authority, administration, classify);
         kiprisService.documentThreadRun(yearDocuments);
 
-        Map<String, String> yearTotal = new HashMap<>();
+        Map<String, Integer> yearTotal = new HashMap<>();
         for(int i=0; i<yearDocuments.size(); i++){
             yearTotal.put(yearDocuments.get(i).getStateName(), kiprisService.findTotal(yearDocuments.get(i).getStateName()));
         }
@@ -57,12 +71,12 @@ public class KiprisController {
 
     @GetMapping(value = "/getTodayWord")
     public Map<String, String> getTodayWord(){
-        return todayKipris.getTodayWord();
+        return todayKiprisService.getTodayWord();
     }
 
     @GetMapping(value = "/getTodayPatent")
     public Map<String, String> getTodayPatent(){
-        return todayKipris.getTodayPatent();
+        return todayKiprisService.getTodayPatent();
     }
 
     @GetMapping(value = "/getRelationWord")
@@ -70,6 +84,5 @@ public class KiprisController {
         naverService.setSearchWord(searchWord);
         return naverService.getRelationWord();
     }
-
 
 }
