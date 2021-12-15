@@ -1,9 +1,6 @@
 package com.kiprisAPI.controller;
 
-import com.kiprisAPI.service.KiprisService;
-import com.kiprisAPI.service.MakeKipris;
-import com.kiprisAPI.service.NaverService;
-import com.kiprisAPI.service.TodayKiprisService;
+import com.kiprisAPI.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,12 +15,15 @@ public class TrensisController {
     private KiprisService kiprisService;
     private TodayKiprisService todayKiprisService;
     private NaverService naverService;
+    private GoogleTrendsService googleTrendsService;
 
     @Autowired
-    public TrensisController(KiprisService kiprisService, TodayKiprisService todayKipris, NaverService naverService) {
+    public TrensisController(KiprisService kiprisService, TodayKiprisService todayKipris,
+                             NaverService naverService, GoogleTrendsService googleTrendsService) {
         this.kiprisService = kiprisService;
         this.todayKiprisService = todayKipris;
         this.naverService = naverService;
+        this.googleTrendsService = googleTrendsService;
     }
 
     @GetMapping(value = "/getAuthorityTotal")
@@ -83,6 +83,22 @@ public class TrensisController {
     public List<String> getRelationWord(@RequestParam String searchWord){
         naverService.setSearchWord(searchWord);
         return naverService.getRelationWord();
+    }
+
+    @GetMapping(value = "/getTrendsValue")
+    public Map<String, List> getTrendsValue(@RequestParam String searchWord, @RequestParam String date){
+        googleTrendsService.browserSetRun();
+        googleTrendsService.setSearchWord(searchWord, date);
+
+        return googleTrendsService.getTrendsValue();
+    }
+
+    @GetMapping(value = "/getTrendsCompareValue")
+    public Map<String, List> getTrendsCompareValue(@RequestParam String searchWord, @RequestParam String compareWord, @RequestParam String date){
+        googleTrendsService.browserSetRun();
+        googleTrendsService.setSearchWord(searchWord, compareWord, date);
+
+        return googleTrendsService.getTrendsValue();
     }
 
 }
