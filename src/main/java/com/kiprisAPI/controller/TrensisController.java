@@ -1,5 +1,6 @@
 package com.kiprisAPI.controller;
 
+import com.kiprisAPI.model.dto.Patent;
 import com.kiprisAPI.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -75,7 +76,7 @@ public class TrensisController {
     }
 
     @GetMapping(value = "/getTodayPatent")
-    public Map<String, String> getTodayPatent(){
+    public Map<String, Patent> getTodayPatent(){
         return todayKiprisService.getTodayPatent();
     }
 

@@ -1,5 +1,6 @@
 package com.kiprisAPI.service;
 
+import com.kiprisAPI.model.dto.Patent;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -17,13 +18,19 @@ public class TodayKiprisService {
     public static final String PATENT_URL = "http://www.kipris.or.kr/khome/today/today.jsp";
 
 
-    public Map<String, String> getTodayPatent(){ //Map<String, String>
-        Map<String, String> todayPatent = new HashMap<>();
+    public Map<String, Patent> getTodayPatent(){ //Map<String, Patent>
+        Map<String, Patent> todayPatent = new HashMap<>();
         Document todayPatentDocument = null;
         Elements patentList = null;
         Element keyPatent = null;
+
         int patentRank;
-        String patent;
+        String title;
+        String url;
+        String link;
+        Patent patent;
+        String href;
+        String number;
 
         try{
             todayPatentDocument = Jsoup.connect(PATENT_URL).get();
@@ -33,11 +40,15 @@ public class TodayKiprisService {
 
         patentList = todayPatentDocument.select("#inventListKPAT > li div.dummy a");
 
-
         for(int i=0; i<patentList.size(); i++){
             keyPatent = patentList.get(i);
             patentRank = Integer.parseInt(keyPatent.select("a").text().substring(0, 2));
-            patent = keyPatent.select("a").text().substring(4);
+            title = keyPatent.select("a").text().substring(4);
+            href = keyPatent.select("a").attr("href");
+            number = href.substring(href.indexOf("'")+1).split("'")[0];
+            url = "http://kpat.kipris.or.kr/kpat/biblioa.do?method=biblioFrame&link=Y&applno=";
+            link = url + number + "&pub_reg=";
+            patent = new Patent(title, link);
             todayPatent.put(String.valueOf(patentRank), patent);
         }
 
