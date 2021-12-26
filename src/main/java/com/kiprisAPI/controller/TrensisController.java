@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "/api")
+@RequestMapping(value = "/api", method = {RequestMethod.GET, RequestMethod.POST})
 public class TrensisController {
 
     private KiprisService kiprisService;
@@ -28,7 +28,7 @@ public class TrensisController {
         System.out.println("API : Controller 생성");
     }
 
-    @GetMapping(value = "/getAuthorityTotal")
+    @RequestMapping(value = "/getAuthorityTotal", method = {RequestMethod.GET, RequestMethod.POST})
     public Map<String, Integer> getAuthorityTotal(@RequestParam String searchWord, @RequestParam String authority){
         kiprisService.setSearchWord(searchWord);
         List<MakeKipris> authDocuments = kiprisService.makeAuthorityDocuments(authority);
@@ -42,7 +42,7 @@ public class TrensisController {
         return authTotal;
     }
 
-    @GetMapping(value = "/getDocumentsTotal")
+    @RequestMapping(value = "/getDocumentsTotal", method = {RequestMethod.GET, RequestMethod.POST})
     public Map<String, Integer> getDocumentsTotal(@RequestParam String searchWord){
         kiprisService.setSearchWord(searchWord);
         List<MakeKipris> allDocuments = kiprisService.makeAllDocuments();
@@ -56,7 +56,7 @@ public class TrensisController {
         return documentsTotal;
     }
 
-    @GetMapping(value = "/getDocumentsYearTotal")
+    @RequestMapping(value = "/getDocumentsYearTotal", method = {RequestMethod.GET, RequestMethod.POST})
     public Map<String, Integer> getDocumentsYearTotal(@RequestParam String searchWord, @RequestParam String authority,
                                                       @RequestParam String administration, @RequestParam String classify) {
         kiprisService.setSearchWord(searchWord);
@@ -71,26 +71,26 @@ public class TrensisController {
         return yearTotal;
     }
 
-    @GetMapping(value = "/getTodayWord")
+    @RequestMapping(value = "/getTodayWord", method = {RequestMethod.GET, RequestMethod.POST})
     public Map<String, String> getTodayWord(){
         System.out.println("API : /getTodayword - Kipris 실시간 특허 검색어");
         return todayKiprisService.getTodayWord();
     }
 
-    @GetMapping(value = "/getTodayPatent")
+    @RequestMapping(value = "/getTodayPatent", method = {RequestMethod.GET, RequestMethod.POST})
     public Map<String, Patent> getTodayPatent(){
         System.out.println("API : /getTodayPatent - Kipris 오늘의 관심 특허");
         return todayKiprisService.getTodayPatent();
     }
 
-    @GetMapping(value = "/getRelationWord")
+    @RequestMapping(value = "/getRelationWord", method = {RequestMethod.GET, RequestMethod.POST})
     public List<String> getRelationWord(@RequestParam String searchWord){
         naverService.setSearchWord(searchWord);
         System.out.println("API : /getRelationword - Naver 연관검색어");
         return naverService.getRelationWord();
     }
 
-    @GetMapping(value = "/getTrendsValue")
+    @RequestMapping(value = "/getTrendsValue", method = {RequestMethod.GET, RequestMethod.POST})
     public Map<String, List> getTrendsValue(@RequestParam String searchWord, @RequestParam String date){
         googleTrendsService.browserSetRun();
         googleTrendsService.setSearchWord(searchWord, date);
@@ -98,7 +98,7 @@ public class TrensisController {
         return googleTrendsService.getTrendsValue();
     }
 
-    @GetMapping(value = "/getTrendsCompareValue")
+    @RequestMapping(value = "/getTrendsCompareValue", method = {RequestMethod.GET, RequestMethod.POST})
     public Map<String, List> getTrendsCompareValue(@RequestParam String searchWord, @RequestParam String compareWord, @RequestParam String date){
         googleTrendsService.browserSetRun();
         googleTrendsService.setSearchWord(searchWord, compareWord, date);
