@@ -25,6 +25,7 @@ public class TrensisController {
         this.todayKiprisService = todayKipris;
         this.naverService = naverService;
         this.googleTrendsService = googleTrendsService;
+        System.out.println("API : Controller 생성");
     }
 
     @GetMapping(value = "/getAuthorityTotal")
@@ -37,7 +38,7 @@ public class TrensisController {
         for(int i=0; i<authDocuments.size(); i++){
             authTotal.put(authDocuments.get(i).getStateName(), kiprisService.findTotal(authDocuments.get(i).getStateName()));
         }
-
+        System.out.println("API : /getAuthorityTotal - 각 권리(특허,실용) 갯수");
         return authTotal;
     }
 
@@ -51,7 +52,7 @@ public class TrensisController {
         for(int i=0; i<allDocuments.size(); i++){
             documentsTotal.put(allDocuments.get(i).getStateName(), kiprisService.findTotal(allDocuments.get(i).getStateName()));
         }
-
+        System.out.println("API : /getDocumentsTotal - 각 권리(특허,실용) 갯수");
         return documentsTotal;
     }
 
@@ -66,23 +67,26 @@ public class TrensisController {
         for(int i=0; i<yearDocuments.size(); i++){
             yearTotal.put(yearDocuments.get(i).getStateName(), kiprisService.findTotal(yearDocuments.get(i).getStateName()));
         }
-
+        System.out.println("API : /getDocumentsYearTotal - 각 권리(특허,실용)를 진행상태로 분류한 년도별 갯수");
         return yearTotal;
     }
 
     @GetMapping(value = "/getTodayWord")
     public Map<String, String> getTodayWord(){
+        System.out.println("API : /getTodayword - Kipris 실시간 특허 검색어");
         return todayKiprisService.getTodayWord();
     }
 
     @GetMapping(value = "/getTodayPatent")
     public Map<String, Patent> getTodayPatent(){
+        System.out.println("API : /getTodayPatent - Kipris 오늘의 관심 특허");
         return todayKiprisService.getTodayPatent();
     }
 
     @GetMapping(value = "/getRelationWord")
     public List<String> getRelationWord(@RequestParam String searchWord){
         naverService.setSearchWord(searchWord);
+        System.out.println("API : /getRelationword - Naver 연관검색어");
         return naverService.getRelationWord();
     }
 
@@ -90,7 +94,7 @@ public class TrensisController {
     public Map<String, List> getTrendsValue(@RequestParam String searchWord, @RequestParam String date){
         googleTrendsService.browserSetRun();
         googleTrendsService.setSearchWord(searchWord, date);
-
+        System.out.println("API : /getTrendsValue - GoogleTrends 각 시간별 검색량");
         return googleTrendsService.getTrendsValue();
     }
 
@@ -98,7 +102,7 @@ public class TrensisController {
     public Map<String, List> getTrendsCompareValue(@RequestParam String searchWord, @RequestParam String compareWord, @RequestParam String date){
         googleTrendsService.browserSetRun();
         googleTrendsService.setSearchWord(searchWord, compareWord, date);
-
+        System.out.println("API : /getTrendsCompareValue - GoogleTrends 비교 단어 각 시간별 검색량");
         return googleTrendsService.getTrendsValue();
     }
 
