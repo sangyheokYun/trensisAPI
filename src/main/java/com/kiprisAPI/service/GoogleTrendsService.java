@@ -20,6 +20,7 @@ public class GoogleTrendsService {
 
     private final static String WEB_DRIVER_ID = "webdriver.chrome.driver";
     private final static String WEB_DRIVER_PATH = "/usr/lib/chromium-browser/chromedriver";
+    //private final static String WEB_DRIVER_PATH = "E:\\library\\chromedriver.exe";
 
     private String TRENDS_URL;
 
