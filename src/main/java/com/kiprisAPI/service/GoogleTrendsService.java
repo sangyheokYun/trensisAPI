@@ -1,4 +1,4 @@
-package com.kiprisAPI.service;
+package trensisOrigin.service;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -19,7 +19,7 @@ public class GoogleTrendsService {
     private WebDriver driver;
 
     private final static String WEB_DRIVER_ID = "webdriver.chrome.driver";
-    private final static String WEB_DRIVER_PATH = "/usr/lib/chromium-browser/chromedriver";
+    private final static String WEB_DRIVER_PATH = "E:\\library\\chromedriver.exe";
 
     private String TRENDS_URL;
 
@@ -119,14 +119,16 @@ public class GoogleTrendsService {
                 .select("tbody > tr");
 
         for(int i=0; i<valueElement.size(); i++){
-            date = this.delSpace(valueElement.get(i).select("td").get(0).text());
+            date = (i+1) + "_" + this.delSpace(valueElement.get(i).select("td").get(0).text());
             valueList = new ArrayList<>();
 
             for(int j=1; j<valueElement.get(i).select("td").size(); j++){
                 value = valueElement.get(i).select("td").get(j).text();
                 valueList.add(Integer.valueOf(value));
-            }
 
+
+            }
+            System.out.println(date);
             trendsValue.put(date, valueList);
         }
 
