@@ -1,4 +1,4 @@
-package trensisOrigin.service;
+package com.kiprisAPI.service;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -19,7 +19,7 @@ public class GoogleTrendsService {
     private WebDriver driver;
 
     private final static String WEB_DRIVER_ID = "webdriver.chrome.driver";
-    private final static String WEB_DRIVER_PATH = "E:\\library\\chromedriver.exe";
+    private final static String WEB_DRIVER_PATH = "/usr/lib/chromium-browser/chromedriver";
 
     private String TRENDS_URL;
 
